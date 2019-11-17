@@ -477,3 +477,67 @@ for a in finais:
 saida.write(fin)
 
 saida.close()
+
+#---------------------------------- LEXICO ------------------------------------------
+
+arq = open('saidaAFD', 'r')
+AFD = arq.readlines()
+alfabeto = []
+
+afd = {}
+entrada = open('exemploGramatica.txt', 'r')
+code = []
+code = entrada.readlines()
+
+separadores = ['<', '>', '=', ',', '.', '|', '~', '+', '-', '*', '/', '!', ' ', '\n', ':', ';', '(', ')']
+
+TS = open('TabelaDeSaida', 'w')
+
+estados = int(AFD[0])
+aux = AFD[1].split()
+finais = AFD[estados+2].split()
+
+#criação do alfabeto
+for a in range(0,len(aux)):
+	alfabeto.append(aux[a])
+
+#criação do afnd (dicionario)
+for a in range(0,len(alfabeto)):
+	afd[alfabeto[a]] = []
+
+for i in range(2, estados+2):
+    slice = AFD[i].split()
+    for j in range(0, len(alfabeto)):
+        afd[alfabeto[j]].append(slice[j])
+
+line = 1
+for i in range(0, len(code)):
+    words = []
+    ini = 0
+    fim = 0
+    for j in range(0, len(code[i])):
+        if code[i][j] not in alfabeto and code[i][j] not in separadores:
+            print("Caracter não permitido pela gramatica da linguagem: '"+ code[i][j]+"'")
+            exit()
+        if(code[i][j] not in separadores):
+            fim += 1
+        else:
+            words.append(code[i][ini:fim])
+            if(code[i][j] != ' ' and code[i][j] != '\n'):
+                words.append(code[i][fim])
+            ini = fim = fim+1
+    while '' in words:
+        words.remove('')
+
+    for word in words:
+        est_atual = 1
+        for a in range(0, len(word)):
+            est_atual = int(afd[word[a]][est_atual])
+        if est_atual == 0:
+            print("Palavra não permitida pela linguagem!: '"+word+"'")
+            exit()
+        else:
+            print(word+'$'+str(est_atual)+'$'+str(line))
+            TS.write(word+'$'+str(est_atual)+'$'+str(line)+'\n')
+
+    line += 1

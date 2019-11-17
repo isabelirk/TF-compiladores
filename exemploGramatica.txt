@@ -1,0 +1,33 @@
+var dna x:'atacg'
+var dna y:'aat'
+var rna z:'uacga'
+var base w:'t'
+
+main:
+    x:x+y
+    x:x-w
+
+    var int i:0
+    for(i;5){
+        y:y+w
+        i:i+1
+    }
+
+    var rna k:'uauacgua'
+    if(k;rna){
+        var rna l:'cgua'
+        k:k+l
+    }else{
+        var dna f:'atatacgtt'
+        k:k+f
+    }
+    if(x;dna){
+        if(y;dna){
+            if(x=y){
+                y:y+x
+            }
+            if(y>=x){
+                u:y+w
+            }
+        }
+    }
